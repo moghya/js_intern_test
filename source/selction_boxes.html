@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Selction Boxes</title>
+</head>
+<style type="text/css">
+	.options-list{
+		 list-style-type: none;
+		 padding:0%;
+	}
+	.selected-option{
+		background:lightsteelblue;
+	}
+	.small-col{
+		width: 5%;
+		float: left;
+		margin: 5%;
+		align-content: center;
+	}
+	.big-col{
+		float:left;
+		margin: 0%;
+		width: 30%;
+	    border: solid #9e9e9e 1px;
+	    scroll-behavior: smooth;
+	    height: 8em;
+	    overflow-y: scroll;
+	}
+</style>
+<body>
+	<div class="container">
+		<div class="row">
+			
+			<div class="big-col">
+				<ul class="options-list" id="available-list">
+					<li class="option"  id="item-1">shubham</li>
+					<li class="option"  id="item-2">sawant</li>
+					<li class="option"  id="item-3">shrinivas</li>
+					<li class="option"  id="item-4">directi</li>
+					<li class="option"  id="item-5">barclays</li>
+					<li class="option"  id="item-6">machine learning</li>
+					<li class="option"  id="item-7">maths</li>
+					<li class="option"  id="item-8">indian army</li>
+				</ul>	
+			</div>
+			
+			<div class="small-col">
+				<button id="to-right">&gt;&gt;</button>
+				<button id="to-left">&lt;&lt;</button>
+			</div>
+			
+			<div class="big-col">
+				<ul class="options-list" id="selected-list">
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	window.selectedId=undefined;
+	window.selectedIdToAddToLeft=undefined;
+	window.selectedIdToAddToRight=undefined;
+
+	const addSelected = function(){
+		var selectedOption =undefined;
+		if(window.selectedId!=undefined){
+			selectedOption=document.getElementById(window.selectedId);
+			selectedOption.click();	
+		}	
+        this.classList.add('selected-option');
+        this.classList.remove('option');
+        this.removeEventListener("click",addSelected);
+        this.addEventListener("click",removeSelected);
+        window.selectedId = this.getAttribute('id');
+        selectedOption=document.getElementById(window.selectedId);
+        if(selectedOption.parentNode.id=='available-list')
+        	window.selectedIdToAddToRight = window.selectedId;
+        else
+        	window.selectedIdToAddToLeft = window.selectedId;
+    }
+
+	const removeSelected = function(){	
+		window.selectedId=undefined;
+		window.selectedIdToAddToRight = window.selectedId;
+		window.selectedIdToAddToLeft = window.selectedId;
+		this.classList.remove('selected-option');
+		this.classList.add('option');
+		this.removeEventListener("click",removeSelected);
+		this.addEventListener("click",addSelected);
+    }
+
+	var options = document.getElementsByClassName('option');
+	for(var i=0;i<options.length;i++){
+    	options[i].addEventListener("click",addSelected);
+	}
+	var selectedOptions = document.getElementsByClassName('selected-option');
+	for(var i=0;i<selectedOptions.length;i++){
+    	options[i].addEventListener("click",removeSelected);
+	}
+
+	function getSelected(){
+		return window.selectedId;
+	}
+
+	const addSelectedToRight=function(){
+		if(window.selectedIdToAddToRight!=undefined){
+			var availableList = document.getElementById('available-list');
+			var selectedList = document.getElementById('selected-list');
+			var selectedOption = document.getElementById(window.selectedIdToAddToRight);
+			selectedOption.click();
+			availableList.removeChild(selectedOption);
+			selectedList.append(selectedOption);
+		}
+
+	}
+	document.getElementById('to-right').addEventListener("click",addSelectedToRight);
+
+	const addSelectedToLeft=function(){
+		if(window.selectedIdToAddToLeft!=undefined){
+			var availableList = document.getElementById('available-list');
+			var selectedList = document.getElementById('selected-list');
+			var selectedOption = document.getElementById(window.selectedIdToAddToLeft);
+			selectedOption.click();
+			availableList.append(selectedOption);
+			selectedList.removeChild(selectedOption);
+		}
+
+	}
+	document.getElementById('to-left').addEventListener("click",addSelectedToLeft);
+</script>
+</html>
